@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace ContactsAPI.Services
+namespace ContactsAPI.BAL.Interface
 {
-    public class ContactService : IContactService
+    internal interface IContactInterface
     {
     }
 }
