@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ContactsAPI.DAL\ContactsAPI.DAL.csproj" />
+    <ProjectReference Include="..\ContactsAPI.MODEL\ContactsAPI.MODEL.csproj" />
+  </ItemGroup>
+
+</Project>

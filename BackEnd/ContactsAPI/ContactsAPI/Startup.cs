@@ -1,16 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ContactsAPI.BAL.Service;
+using ContactsAPI.DAL;
+using ContactsAPI.DAL.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ContactsAPI.Helper;
+using IContactInterfaceBAL = ContactsAPI.BAL.Interface.IContactInterface;
+using IContactInterfaceDAL = ContactsAPI.DAL.Interface.IContactInterface;
 
 namespace ContactsAPI
 {
@@ -27,20 +27,23 @@ namespace ContactsAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
+            services.AddScoped<IContactInterfaceBAL, ContactService>();
+            services.AddScoped<IContactInterfaceDAL, ContactRepository>();
+            services.AddDbContext<ApplicationDBContext>(option =>
+                option.UseInMemoryDatabase(Configuration.GetConnectionString("SpeckPointDB"))
+            );
+            services.AddCors(c => c.AddPolicy("CorsPolicy", builder => {
+                builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            }));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Specpoint API",
+                    Title = "Specpoint Contact API",
                     Version = "v1",
-                    Description = "Description for the API goes here.",
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Deltek Specpoint Developer",
-                        Email = string.Empty,
-                        Url = new Uri("https://coderjony.com/"),
-                    },
+                    Description = "Contact Manager API",
                 });
             });
         }
@@ -52,6 +55,8 @@ namespace ContactsAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("CorsPolicy");
 
             app.UseSwagger();
 
@@ -70,6 +75,12 @@ namespace ContactsAPI
             app.UseRouting();
 
             app.UseAuthorization();
+
+            // Retrieve IHost instance from ApplicationServices
+            var host = app.ApplicationServices.GetService<IHost>();
+
+            // Check if host is not null and then call SeedDatabase
+            host?.SeedDatabase();
 
             app.UseEndpoints(endpoints =>
             {
