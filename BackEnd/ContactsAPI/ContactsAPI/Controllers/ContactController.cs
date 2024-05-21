@@ -1,46 +1,87 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using ContactsAPI.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Cors;
 
 namespace ContactsAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class ContactController : Controller
+    [ApiController]
+    [EnableCors]
+    public class ContactController : ControllerBase
     {
-        // GET: api/<controller>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly AppDbContext _context;
+
+        public ContactController(AppDbContext context)
         {
-            return new string[] { "value1", "value2" };
+            _context = context;
         }
 
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // GET: api/Contact
+        [HttpGet] // Route for retrieving all contacts
+        public ActionResult<IEnumerable<Contact>> GetContacts()
         {
-            return "value";
+            var contactList = _context.Contacts.ToList();
+            return contactList;
         }
 
-        // POST api/<controller>
-        [HttpPost]
-        public void Post([FromBody]string value)
+        // GET: api/Contact/5
+        [HttpGet("{id}")] // Route for retrieving a specific contact by ID
+        public ActionResult<Contact> GetContact(int id)
         {
+            var contact = _context.Contacts.Find(id);
+
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            return contact;
         }
 
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        // POST: api/Contact
+        [HttpPost] // Route for creating a new contact
+        
+        public ActionResult<Contact> PostContact(Contact contact)
         {
+            _context.Contacts.Add(contact);
+            _context.SaveChanges();
+
+            return CreatedAtAction(nameof(GetContact), new { id = contact.Id }, contact);
         }
 
-        // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // PUT: api/Contact/5
+        [HttpPut("{id}")] // Route for updating an existing contact by ID
+        public IActionResult PutContact(int id, Contact contact)
         {
+            if (id != contact.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(contact).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return NoContent();
+        }
+
+        // DELETE: api/Contact/5
+        [HttpDelete("{id}")] // Route for deleting a contact by ID
+        public IActionResult DeleteContact(int id)
+        {
+            var contact = _context.Contacts.Find(id);
+
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            _context.Contacts.Remove(contact);
+            _context.SaveChanges();
+
+            return NoContent();
         }
     }
 }
