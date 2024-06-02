@@ -1,0 +1,232 @@
+.App{
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   width: 100%;
+}
+.Body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  margin-top: 40px;
+}
+
+
+.header h2{
+  color: black;
+}
+
+
+.ContactBody{
+  background-color: white;
+  width: 65%;
+  height: 35px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid black;
+  border-radius: 5px;
+  margin: 3px;
+}
+
+.main-buttons{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.AddNew{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.AddDefualt{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  margin-left: 10px;
+}
+
+.Search-bar {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.Search-bar:focus {
+  border-color: #007bff;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+  outline: none;
+}
+
+.search-container{
+  position: absolute;
+  right: 60px;
+  top:10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.search-icon{
+  position: absolute;
+  top:22px;
+  right:16px;
+}
+
+.invisible{
+  display: none !important;
+}
+
+.ContactName{
+  width: 50%;
+  margin-left: 5px;
+}
+
+.ContactNumber{
+  width: 25%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-right: 4px;
+}
+
+.icon-btn{
+  cursor: pointer;
+}
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.name-input{
+  margin: 2px;
+}
+.name-input input{
+  border-radius: 5px;
+}
+.name-input label{
+  margin-right: 30px;
+}
+
+.number-input{
+  margin:2px;
+  margin-bottom: 10px;
+}
+.number-input input{
+  border-radius: 5px;
+}
+
+.number-input label{
+  margin-right: 13px;
+}
+
+.error{
+  color: red;
+}
+
+.submit-btn{
+  margin: 4px;
+}
+.close-btn{
+  margin: 4px;
+}
+
+@keyframes rollOffAnimation {
+  0% {
+    transform: rotate(0deg) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(-270deg) translateY(100px);
+    opacity: 0;
+  }
+}
+
+.rollOff {
+  animation: rollOffAnimation 2s forwards; /* 2s duration for the animation */
+}
+
+
+@keyframes horizontalRotation {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(360deg);
+  }
+}
+
+.rotateHorizontal {
+  background-color: yellowgreen;
+  animation: horizontalRotation 2s forwards;
+}
+
+
+ /* Button styling */
+
+ .button-toggle {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center; 
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.button-toggle:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.button-toggle:active {
+  background-color: #004494;
+  transform: translateY(0);
+}
+
+.button-toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.submit-btn{
+  background-color: greenyellow;
+}
+
+.close-btn{
+  background-color: red;
+}
