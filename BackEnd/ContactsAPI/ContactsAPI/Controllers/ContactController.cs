@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ContactsAPI.Models;
+using ContactsAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,38 +11,58 @@ using Microsoft.AspNetCore.Mvc;
 namespace ContactsAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class ContactController : Controller
+    [ApiController]
+    public class ContactController : ControllerBase
     {
+        private readonly IContactService _contactService;
+        public ContactController(IContactService contactService)
+        {
+            _contactService = contactService;
+        }
+
         // GET: api/<controller>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult<IEnumerable<Contact>>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var contacts = await _contactService.GetAllContactsAsync();
+            return Ok(contacts);
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<Contact>> GetContact(int id)
         {
-            return "value";
+            var contact = await _contactService.GetContactByIdAsync(id);
+            if (contact == null)
+            {
+                return NotFound();
+            }
+            return Ok(contact);
         }
-
-        // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<ActionResult<Contact>> PostContact(Contact contact)
         {
+            var createdContact = await _contactService.CreateContactAsync(contact);
+            return CreatedAtAction(nameof(GetContact), new { id = createdContact.Id }, createdContact);
         }
 
-        // PUT api/<controller>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public async Task<IActionResult> PutContact(int id, Contact contact)
         {
+            if (id != contact.Id)
+            {
+                return BadRequest();
+            }
+
+            await _contactService.UpdateContactAsync(contact);
+            return NoContent();
         }
 
-        // DELETE api/<controller>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> DeleteContact(int id)
         {
+            await _contactService.DeleteContactAsync(id);
+            return NoContent();
         }
     }
 }
