@@ -2,10 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ContactsAPI.Database;
+using ContactsAPI.Models;
+using ContactsAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +30,15 @@ namespace ContactsAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ContactDbContext>(options => options.UseInMemoryDatabase("ContactsDb"));
+            services.AddScoped<IContactService, ContactService>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp",
+                    policy => policy.WithOrigins("http://localhost:3000")
+                                    .AllowAnyMethod()
+                                    .AllowAnyHeader());
+            });
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -70,11 +83,25 @@ namespace ContactsAPI
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseCors("AllowReactApp");
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ContactDbContext>();
+                context.Contacts.AddRange(Enumerable.Range(1, 10).Select(i => new Contact
+                {
+                    Id = i,
+                    Name = $"Contact {i}",
+                    Email = $"contact{i}@example.com",
+                    Phone = $"123-456-789{i}"
+                }));
+                context.SaveChanges();
+            }
         }
     }
 }
