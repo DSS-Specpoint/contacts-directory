@@ -32,6 +32,7 @@ builder.Services.AddControllers();
 
 // Adding swagger Configure Swagger(Swagger will gave clarity about API and will add comments on every API's )
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddTransient<ExceptionMiddleware>();
 builder.Services.AddSwaggerGen(c =>
 {
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -67,6 +68,9 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty; // Opens at http://localhost:5000
     });
 }
+
+//Adding global Middleware to catch Exception.
+app.UseMiddleware<ExceptionMiddleware>(); 
 
 app.UseAuthorization();
 app.MapControllers();
