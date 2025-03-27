@@ -7,6 +7,8 @@ using System;
 using System.IO;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using ContactManagerApi.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Starting with allowing our front-end part using CORS.
@@ -32,7 +34,6 @@ builder.Services.AddControllers();
 
 // Adding swagger Configure Swagger(Swagger will gave clarity about API and will add comments on every API's )
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddTransient<ExceptionMiddleware>();
 builder.Services.AddSwaggerGen(c =>
 {
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
