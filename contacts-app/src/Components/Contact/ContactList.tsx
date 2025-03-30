@@ -11,17 +11,19 @@ const ContactList = (props: {
     return <Card>No contacts present</Card>;
   } else {
     return (
-      <table>
+      <table className="table table-striped mt-4 p-4">
         <thead>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Email</th>
-          <th>Phone Number</th>
-          <th>Actions</th>
+          <tr>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Actions</th>
+          </tr>
         </thead>
         <tbody>
           {props.contacts.map((x: Contact) => (
-            <ContactItem item={x} onDelete={props.onDelete}/>
+            <ContactItem item={x} onDelete={props.onDelete} />
           ))}
         </tbody>
       </table>

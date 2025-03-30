@@ -4,8 +4,8 @@ import React from "react";
 const MainNavigation = () => {
   return (
     <header>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
-        <div className="container-fluid">
+      <nav className="navbar navbar-expand-lg bg-body-tertiary d-flex justify-content-center">
+        <div>
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <NavLink className="nav-link" to="/">

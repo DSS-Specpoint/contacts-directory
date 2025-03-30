@@ -15,7 +15,7 @@ function App() {
   return (
     <Router>
       <MainNavigation />
-      <main style={{ textAlign: "center" }}>
+      <main>
         <Routes>
           <Route path="/" element={<Contacts />} />
           <Route path="/updateContact/:contactId" element={<UpdateContact />} />

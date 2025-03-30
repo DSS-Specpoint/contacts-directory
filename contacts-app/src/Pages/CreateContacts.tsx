@@ -10,7 +10,7 @@ const CreateContacts = () => {
 
   const handleOnSubmit = async (contact: UpdateCreateContact) => {
     try {
-      const respsonse = await sendRequest(
+      await sendRequest(
         "https://localhost:44305/api/Contact",
         "POST",
         contact

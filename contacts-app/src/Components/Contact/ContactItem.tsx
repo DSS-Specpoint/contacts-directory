@@ -1,7 +1,10 @@
 import { Contact } from "Models/Contact";
 import React from "react";
 import { Link } from "react-router-dom";
-const ContactItem = (props: { item: Contact, onDelete:(id:string) => void }) => {
+const ContactItem = (props: {
+  item: Contact;
+  onDelete: (id: string) => void;
+}) => {
   const { item: contact } = props;
   return (
     <tr key={contact.id}>
@@ -10,8 +13,12 @@ const ContactItem = (props: { item: Contact, onDelete:(id:string) => void }) => 
       <td>{contact.email}</td>
       <td>{contact.phoneNumber}</td>
       <td>
-        <Link to={`/updateContact/${contact.id}`}>Modify,{"  "}</Link>
-        <Link to="#" onClick={() => props.onDelete(contact.id)}>Delete</Link>
+        <Link to={`/updateContact/${contact.id}`}>
+          <i className="ri-edit-box-line" title="Modify Contact"/>{"  "}
+        </Link>
+        <Link to="#" onClick={() => props.onDelete(contact.id)}>
+        <i className="ri-delete-bin-line" title="Remove Contact"/>
+        </Link>
       </td>
     </tr>
   );

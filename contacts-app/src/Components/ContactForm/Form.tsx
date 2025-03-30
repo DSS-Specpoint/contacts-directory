@@ -76,12 +76,10 @@ const Form = (props: {
             minLength={1}
             required
           />
+          {!firstName.isValid && (
+            <p className="text-danger">Please enter valid first name.</p>
+          )}
         </div>
-        {!firstName.isValid && (
-          <div className="col">
-            <p style={{color:"red"}}>Please enter valid first name.</p>
-          </div>
-        )}
       </div>
       <div className="mb-3 row">
         <div className="col mb-1">
@@ -99,12 +97,10 @@ const Form = (props: {
             className="form-control"
             required
           />
+          {!lastName.isValid && (
+            <p className="text-danger">Please enter valid last name.</p>
+          )}
         </div>
-        {!lastName.isValid && (
-          <div className="col">
-            <p style={{color:"red"}}>Please enter valid last name.</p>
-          </div>
-        )}
       </div>
       <div className="mb-3 row">
         <div className="col mb-1">
@@ -121,12 +117,10 @@ const Form = (props: {
             className="form-control"
             required
           />
+          {!email.isValid && (
+            <p className="text-danger">Please enter valid email.</p>
+          )}
         </div>
-        {!email.isValid && (
-          <div className="col">
-            <p style={{color:"red"}}>Please enter valid email.</p>
-          </div>
-        )}
       </div>
       <div className="mb-3 row">
         <div className="col mb-1">
@@ -142,12 +136,10 @@ const Form = (props: {
             onChange={handleOnChange}
             className="form-control"
           />
+          {!phoneNumber.isValid && (
+            <p className="text-danger">Please enter valid phone Number.</p>
+          )}
         </div>
-        {!phoneNumber.isValid && (
-          <div className="col">
-            <p style={{color:"red"}}>Please enter valid phone Number.</p>
-          </div>
-        )}
       </div>
       <div className="row">
         <button
