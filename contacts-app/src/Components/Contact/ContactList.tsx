@@ -23,7 +23,7 @@ const ContactList = (props: {
         </thead>
         <tbody>
           {props.contacts.map((x: Contact) => (
-            <ContactItem item={x} onDelete={props.onDelete} />
+            <ContactItem item={x} key={x.id} onDelete={props.onDelete} />
           ))}
         </tbody>
       </table>

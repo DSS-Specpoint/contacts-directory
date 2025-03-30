@@ -7,7 +7,7 @@ const ContactItem = (props: {
 }) => {
   const { item: contact } = props;
   return (
-    <tr key={contact.id}>
+    <tr>
       <td>{contact.firstName}</td>
       <td>{contact.lastName}</td>
       <td>{contact.email}</td>
