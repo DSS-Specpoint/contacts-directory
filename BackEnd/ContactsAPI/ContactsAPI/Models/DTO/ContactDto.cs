@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace ContactsAPI.Models
+namespace ContactsAPI.Models.DTO
 {
-    public class Contact
+    public class ContactDto
     {
         public Guid Id { get; set; } // Primary Key
         public string FirstName { get; set; }
