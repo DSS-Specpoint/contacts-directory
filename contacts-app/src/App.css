@@ -36,3 +36,172 @@
     transform: rotate(360deg);
   }
 }
+.headline {
+  display: inline-flex;
+  align-items: center;
+  background-color: #97d1f7;
+  color: black;
+  font-family: 'Poppins', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px auto;
+  padding: 5px 20px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  text-decoration: underline;
+  border-radius: 15px;
+}
+
+
+.headline1 {
+  color: rgb(178, 36, 159);
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: 0px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  font-family: 'Georgia', serif;
+}
+
+.headline2 {
+  color: rgb(178, 36, 159);
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  font-family: 'Georgia', serif;
+}
+
+.search-input {
+  padding: 5px;
+  margin-top: -10px;
+  margin-right: auto;      
+  margin-bottom: 16px;
+  margin-left: auto;       
+  width: 80%;              
+  max-width: 600px;         
+  display: block;
+}
+
+.table-container {
+  justify-content: center;
+}
+
+.contact-table {
+  width: 70%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contact-table th, .contact-table td {
+  padding: 4px 7px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.contact-table td:last-child,
+.contact-table th:last-child {
+  text-align: center;        /* Center the "Actions" column */
+}
+
+.contact-table th {
+  background-color: #f4f4f4;
+  color: #333;
+  justify-self: auto;
+}
+
+.contact-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.contact-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+button {
+  margin-right: 8px;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:first-of-type {
+  background-color: #3498db;
+  color: white;
+}
+
+button:last-of-type {
+  background-color: #e74c3c;
+  color: white;
+}
+/* Form container with flex-direction column */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto; /* Center the form */
+}
+
+/* Row to display inputs side by side */
+.input-row {
+  display: flex;
+  gap: 5px; /* Space between the inputs in the same row */
+}
+
+/* Wrapper around each input element to make them responsive */
+.input-wrapper {
+  flex: 1; /* Ensures the input takes up equal space */
+}
+
+/* Style inputs to take full width of the container */
+input {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Ensures padding doesn't affect the input's width */
+}
+
+/* Cancel button */
+.cancel-button {
+  background-color: #58d9f3;
+}
+
+.cancel-button:disabled {
+  background-color: #ccc;
+}
+.form-container {
+  border: 1px solid #ddd; /* Add border */
+  padding: 20px; /* Add padding around content */
+  background-color: #fff; /* Set background color */
+  border-radius: 8px; /* Optional: rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
+  width: 100%; /* Full width or customize as needed */
+  max-width: 600px; /* Optional: max width for the form */
+  margin: 0 auto; /* Center the box */
+}
+.divider {
+  border: 0;
+  border-top: 1px solid #ddd;  /* Light gray line */
+  margin: 20px 0;  /* Space around the line */
+}

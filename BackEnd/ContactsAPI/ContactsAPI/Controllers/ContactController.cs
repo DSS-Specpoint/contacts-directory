@@ -2,45 +2,88 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ContactsAPI.Data;
+using ContactsAPI.Models;
+using ContactsAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ContactsAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class ContactController : Controller
+    [ApiController]
+    public class ContactController : ControllerBase
     {
-        // GET: api/<controller>
+        private readonly AppDbContext _context;
+        private readonly IContactService _contactService;
+
+        public ContactController(AppDbContext context, IContactService contactService)
+        {
+            _context = context;
+            _contactService = contactService;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
+        public async Task<IActionResult> GetContacts()
+        {            
+            var contacts = _contactService.GetAllContacts();
+            return Ok(contacts);
         }
 
-        // GET api/<controller>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> GetContact(int id)
         {
-            return "value";
+            // var contact = await _context.Contacts.FindAsync(id);
+            var contact = _contactService.GetContacts(id);
+            if (contact == null)
+                return NotFound();
+
+            return Ok(contact);
         }
 
-        // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> CreateContact([FromBody] Contact contact)
         {
+            _context.Contacts.Add(contact);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetContact), new { id = contact.Id }, contact);
         }
 
-        // PUT api/<controller>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public async Task<IActionResult> UpdateContact(int id, [FromBody] Contact contact)
         {
+            if (id != contact.Id)
+                return BadRequest();
+
+            _context.Entry(contact).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Contacts.Any(c => c.Id == id))
+                    return NotFound();
+
+                throw;
+            }
+
+            return NoContent();
         }
 
-        // DELETE api/<controller>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> DeleteContact(int id)
         {
+            var contact = await _context.Contacts.FindAsync(id);
+            if (contact == null)
+                return NotFound();
+
+            _context.Contacts.Remove(contact);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
