@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using ContactsAPI.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using ContactsAPI.Services;
 
 namespace ContactsAPI
 {
@@ -26,7 +28,21 @@ namespace ContactsAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IContactService, ContactService>();
+            services.AddDbContext<AppDbContext>(options =>
+                    options.UseInMemoryDatabase("ContactsDB"));
+
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
 
             services.AddSwaggerGen(c =>
             {
@@ -52,6 +68,11 @@ namespace ContactsAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                dbContext.Database.EnsureCreated();
+            }
 
             app.UseSwagger();
 
@@ -67,6 +88,7 @@ namespace ContactsAPI
 
             app.UseHttpsRedirection();
 
+            app.UseCors("AllowAll");
             app.UseRouting();
 
             app.UseAuthorization();
