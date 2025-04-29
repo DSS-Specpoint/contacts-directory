@@ -1,15 +1,17 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using ContactsAPI.Data;
+using ContactsAPI.Models;
+using ContactsAPI.Repositories.Data;
+using ContactsAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace ContactsAPI
@@ -26,6 +28,11 @@ namespace ContactsAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IContactService, ContactService>();
+            services.AddScoped<IContactRepository, ContactRepository>();
+            services.AddDbContext<ContactDBContext>(options =>
+                options.UseInMemoryDatabase("ContactsDb"), ServiceLifetime.Singleton);
+
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -75,6 +82,13 @@ namespace ContactsAPI
             {
                 endpoints.MapControllers();
             });
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<ContactDBContext>();
+
+                dbContext.Database.EnsureCreated();
+            }
         }
     }
 }
