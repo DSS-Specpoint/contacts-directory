@@ -3,7 +3,6 @@ import { Contact } from '../types/contact';
 const API_BASE_URL = 'https://localhost:44305/api/contacts';
 
 export const apiService = {
-    // Get all contacts
     getAllContacts: async (): Promise<Contact[]> => {
         try {
             const response = await fetch(API_BASE_URL);
@@ -22,7 +21,6 @@ export const apiService = {
         }
     },
 
-    // Get contact by ID
     getContactById: async (id: number): Promise<Contact> => {
         try {
             const response = await fetch(`${API_BASE_URL}/${id}`);
@@ -40,7 +38,6 @@ export const apiService = {
         }
     },
 
-    // Create new contact
     createContact: async (contact: Omit<Contact, 'id'>): Promise<Contact> => {
         try {
             const response = await fetch(API_BASE_URL, {
@@ -60,7 +57,6 @@ export const apiService = {
         }
     },
 
-    // Update existing contact
     updateContact: async (contact: Contact): Promise<Contact> => {
         try {
             const response = await fetch(`${API_BASE_URL}/${contact.id}`, {
@@ -80,7 +76,6 @@ export const apiService = {
         }
     },
 
-    // Delete contact
     deleteContact: async (id: number): Promise<void> => {
         try {
             const response = await fetch(`${API_BASE_URL}/${id}`, {

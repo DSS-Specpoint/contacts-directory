@@ -25,6 +25,51 @@ import { Contact } from '../types/contact';
 import { apiService } from '../services/apiService';
 import ConfirmationDialog from '../components/ConfirmationDialog';
 
+const styles = {
+    root: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    title: {
+        color: '#2c3e50',
+        mb: 4,
+        textAlign: 'center',
+        fontWeight: 500
+    },
+    searchContainer: {
+        width: '100%',
+        mb: 3,
+        px: 2
+    },
+    searchInput: {
+        '& .MuiOutlinedInput-root': {
+            backgroundColor: 'white',
+            '&:hover fieldset': {
+                borderColor: 'primary.main',
+            },
+        }
+    },
+    tableContainer: {
+        width: '100%'
+    },
+    tableRow: {
+        '&:last-child td, &:last-child th': { border: 0 }
+    },
+    pagination: {
+        '.MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows': {
+            margin: 0
+        }
+    },
+    loadingContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh'
+    }
+};
+
 type Order = 'asc' | 'desc';
 
 interface HeadCell {
@@ -51,8 +96,6 @@ const ContactsList = () => {
     const [orderBy, setOrderBy] = useState<keyof Contact>('createdAt');
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [contactToDelete, setContactToDelete] = useState<number | null>(null);
-    
-    // Pagination state
     const [page, setPage] = useState(0);
     const [rowsPerPage] = useState(5);
 
@@ -64,11 +107,8 @@ const ContactsList = () => {
         try {
             setLoading(true);
             const data = await apiService.getAllContacts();
-            console.log('API Response:', data); // Debug log
             
-            // Ensure data is an array
             if (!Array.isArray(data)) {
-                console.error('API did not return an array:', data);
                 setError('Invalid data format received from server');
                 setContacts([]);
                 return;
@@ -76,7 +116,6 @@ const ContactsList = () => {
             
             setContacts(data);
         } catch (err) {
-            console.error('Error fetching contacts:', err); // Debug log
             setError(err instanceof Error ? err.message : 'An error occurred');
             setContacts([]);
         } finally {
@@ -93,7 +132,7 @@ const ContactsList = () => {
         if (contactToDelete) {
             try {
                 await apiService.deleteContact(contactToDelete);
-                fetchContacts(); // Refresh the list after deletion
+                fetchContacts();
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Failed to delete contact');
             }
@@ -107,20 +146,17 @@ const ContactsList = () => {
         setContactToDelete(null);
     };
 
-    // Search handler
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value);
-        setPage(0); // Reset to first page when searching
+        setPage(0);
     };
 
-    // Sorting handlers
     const handleRequestSort = (property: keyof Contact) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
     };
 
-    // Filter contacts based on search query
     const filteredContacts = contacts.filter(contact => {
         const searchLower = searchQuery.toLowerCase();
         return (
@@ -131,7 +167,6 @@ const ContactsList = () => {
         );
     });
 
-    // Sort contacts
     const sortedContacts = React.useMemo(() => {
         return [...filteredContacts].sort((a, b) => {
             if (!a[orderBy] || !b[orderBy]) return 0;
@@ -139,26 +174,21 @@ const ContactsList = () => {
             const aValue = a[orderBy]?.toString().toLowerCase() || '';
             const bValue = b[orderBy]?.toString().toLowerCase() || '';
             
-            if (order === 'asc') {
-                return aValue.localeCompare(bValue);
-            } else {
-                return bValue.localeCompare(aValue);
-            }
+            return order === 'asc' 
+                ? aValue.localeCompare(bValue)
+                : bValue.localeCompare(aValue);
         });
     }, [filteredContacts, order, orderBy]);
 
-    // Pagination handlers
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
 
-    // Calculate paginated data
     const paginatedContacts = sortedContacts.slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
     );
 
-    // Format date
     const formatDate = (dateString?: string) => {
         if (!dateString) return '';
         return new Date(dateString).toLocaleString();
@@ -167,7 +197,7 @@ const ContactsList = () => {
     if (loading) {
         return (
             <Layout>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <Box sx={styles.loadingContainer}>
                     <CircularProgress />
                 </Box>
             </Layout>
@@ -177,18 +207,17 @@ const ContactsList = () => {
     if (error) {
         return (
             <Layout>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <Box sx={styles.loadingContainer}>
                     <Typography color="error">{error}</Typography>
                 </Box>
             </Layout>
         );
     }
 
-    // Ensure contacts is an array before rendering
     if (!Array.isArray(contacts)) {
         return (
             <Layout>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <Box sx={styles.loadingContainer}>
                     <Typography color="error">Invalid data format received from server</Typography>
                 </Box>
             </Layout>
@@ -197,28 +226,17 @@ const ContactsList = () => {
 
     return (
         <Layout>
-            <Box sx={{ 
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center'
-            }}>
+            <Box sx={styles.root}>
                 <Typography 
                     variant="h4" 
                     component="h1" 
                     gutterBottom 
-                    sx={{ 
-                        color: '#2c3e50',
-                        mb: 4,
-                        textAlign: 'center',
-                        fontWeight: 500
-                    }}
+                    sx={styles.title}
                 >
                     Contacts
                 </Typography>
 
-                {/* Search Bar */}
-                <Box sx={{ width: '100%', mb: 3, px: 2 }}>
+                <Box sx={styles.searchContainer}>
                     <TextField
                         fullWidth
                         variant="outlined"
@@ -232,18 +250,11 @@ const ContactsList = () => {
                                 </InputAdornment>
                             ),
                         }}
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                backgroundColor: 'white',
-                                '&:hover fieldset': {
-                                    borderColor: 'primary.main',
-                                },
-                            },
-                        }}
+                        sx={styles.searchInput}
                     />
                 </Box>
 
-                <TableContainer sx={{ width: '100%' }}>
+                <TableContainer sx={styles.tableContainer}>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -281,9 +292,7 @@ const ContactsList = () => {
                                     <TableRow 
                                         key={contact.id}
                                         hover
-                                        sx={{
-                                            '&:last-child td, &:last-child th': { border: 0 }
-                                        }}
+                                        sx={styles.tableRow}
                                     >
                                         <TableCell>
                                             {contact.firstName} {contact.lastName}
@@ -323,11 +332,7 @@ const ContactsList = () => {
                             onPageChange={handleChangePage}
                             rowsPerPage={rowsPerPage}
                             rowsPerPageOptions={[5]}
-                            sx={{
-                                '.MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows': {
-                                    margin: 0
-                                }
-                            }}
+                            sx={styles.pagination}
                         />
                     )}
                 </TableContainer>

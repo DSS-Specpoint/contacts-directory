@@ -9,7 +9,7 @@ const Layout = ({ children }: LayoutProps) => {
     return (
         <Box
             sx={{
-                minHeight: 'calc(100vh - 64px)', // Subtract navbar height
+                minHeight: 'calc(100vh - 64px)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
