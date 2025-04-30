@@ -24,8 +24,18 @@ const ContactForm: React.FC<ContactFormProps> = ({ contact, onSubmit, onCancel }
     });
 
     useEffect(() => {
+        console.log('Contact prop received:', contact); // Debug log
         if (contact) {
-            setFormData(contact);
+            const initialData = {
+                id: contact.id,
+                firstName: contact.firstName || '',
+                lastName: contact.lastName || '',
+                email: contact.email || '',
+                phoneNumber: contact.phoneNumber || '',
+                createdAt: contact.createdAt
+            };
+            console.log('Setting form data:', initialData); // Debug log
+            setFormData(initialData);
         }
     }, [contact]);
 

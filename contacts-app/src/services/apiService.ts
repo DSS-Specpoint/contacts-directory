@@ -29,7 +29,11 @@ export const apiService = {
             if (!response.ok) {
                 throw new Error('Failed to fetch contact');
             }
-            return await response.json();
+            const result = await response.json();
+            if (!result.data) {
+                throw new Error('Invalid response format from server');
+            }
+            return result.data;
         } catch (error) {
             console.error(`Error fetching contact ${id}:`, error);
             throw error;

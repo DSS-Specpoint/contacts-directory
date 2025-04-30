@@ -23,6 +23,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Layout from '../components/Layout';
 import { Contact } from '../types/contact';
 import { apiService } from '../services/apiService';
+import ConfirmationDialog from '../components/ConfirmationDialog';
 
 type Order = 'asc' | 'desc';
 
@@ -48,6 +49,8 @@ const ContactsList = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [order, setOrder] = useState<Order>('desc');
     const [orderBy, setOrderBy] = useState<keyof Contact>('createdAt');
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [contactToDelete, setContactToDelete] = useState<number | null>(null);
     
     // Pagination state
     const [page, setPage] = useState(0);
@@ -81,15 +84,27 @@ const ContactsList = () => {
         }
     };
 
-    const handleDelete = async (id: number) => {
-        if (window.confirm('Are you sure you want to delete this contact?')) {
+    const handleDeleteClick = (id: number) => {
+        setContactToDelete(id);
+        setDeleteDialogOpen(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        if (contactToDelete) {
             try {
-                await apiService.deleteContact(id);
+                await apiService.deleteContact(contactToDelete);
                 fetchContacts(); // Refresh the list after deletion
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Failed to delete contact');
             }
         }
+        setDeleteDialogOpen(false);
+        setContactToDelete(null);
+    };
+
+    const handleDeleteCancel = () => {
+        setDeleteDialogOpen(false);
+        setContactToDelete(null);
     };
 
     // Search handler
@@ -289,7 +304,7 @@ const ContactsList = () => {
                                                 <IconButton
                                                     size="small"
                                                     color="error"
-                                                    onClick={() => contact.id && handleDelete(contact.id)}
+                                                    onClick={() => contact.id && handleDeleteClick(contact.id)}
                                                 >
                                                     <DeleteIcon fontSize="small" />
                                                 </IconButton>
@@ -317,6 +332,13 @@ const ContactsList = () => {
                     )}
                 </TableContainer>
             </Box>
+            <ConfirmationDialog
+                open={deleteDialogOpen}
+                title="Delete Contact"
+                message="Are you sure you want to delete this contact? This action cannot be undone."
+                onConfirm={handleDeleteConfirm}
+                onCancel={handleDeleteCancel}
+            />
         </Layout>
     );
 };

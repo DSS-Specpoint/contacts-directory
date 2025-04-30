@@ -18,6 +18,7 @@ const UpdateContact = () => {
             try {
                 if (!id) return;
                 const data = await apiService.getContactById(parseInt(id));
+                console.log('Fetched contact data:', data);
                 setContact(data);
             } catch (err) {
                 setError('Failed to fetch contact details');
