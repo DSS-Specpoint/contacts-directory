@@ -43,7 +43,7 @@ namespace ContactsAPI.Controllers
             {
                 var contact = await _contactService.GetByIdAsync(id);
                 if (contact == null)
-                    return NotFound($"Contact with ID {id} not found.");
+                    return NotFound(new {message = $"Contact with Id {id} not found." });
 
                 return Ok(new { data = contact });
             }
@@ -81,9 +81,9 @@ namespace ContactsAPI.Controllers
             {
                 var updated = await _contactService.UpdateAsync(id, contactRequest);
                 if (!updated)
-                    return NotFound($"Contact with ID {id} not found.");
+                    return NotFound(new { message = $"Contact with Id {id} not found." });
 
-                return Ok(new { message = $"Contact with ID {id} updated successfully." });
+                return Ok(new { message = $"Contact with Id {id} updated successfully." });
             }
             catch (Exception ex)
             {
@@ -99,9 +99,9 @@ namespace ContactsAPI.Controllers
             {
                 var deleted = await _contactService.DeleteAsync(id);
                 if (!deleted)
-                    return NotFound($"Contact with ID {id} not found.");
+                    return NotFound(new { message = $"Contact with Id {id} not found." });
 
-                return Ok(new { message = $"Contact with ID {id} deleted successfully." });
+                return Ok(new { message = $"Contact with Id {id} deleted successfully." });
             }
             catch (Exception ex)
             {
