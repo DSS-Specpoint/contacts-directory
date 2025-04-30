@@ -13,7 +13,7 @@ Scenario Outline: Get All Contacts
 
 Examples:
 | endpoint     | responseStatusCode | responseData                                                                                                      |
-| api/contacts | 200                | {"data":[{"id":1,"firstName":"John","lastName":"Doe","email":"john.doe@example.com","phoneNumber":"1234567890"}]} |
+| api/contacts | 200                | {"data":[{"id":1,"firstName":"John","lastName":"Doe","email":"john.doe@example.com","phoneNumber":"1234567890","createdAt":null}]} |
 
 @GetContactById
 Scenario Outline: Get Contact by ID
@@ -23,7 +23,7 @@ Scenario Outline: Get Contact by ID
 
 Examples:
 | endpoint               | responseStatusCode | responseData                                                                                      |
-| api/contacts/1         | 200                | {"data":{"id":1,"firstName":"John","lastName":"Doe","email":"john.doe@example.com","phoneNumber":"1234567890"}}  |
+| api/contacts/1         | 200                | {"data":{"id":1,"firstName":"John","lastName":"Doe","email":"john.doe@example.com","phoneNumber":"1234567890","createdAt":null}}  |
 | api/contacts/99        | 404                | {"message":"Contact with Id 99 not found."}                                                        |
 
 @CreateContact

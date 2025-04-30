@@ -1,5 +1,6 @@
 ﻿using ContactsAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 
 namespace ContactsAPI.Repositories.Data
@@ -21,7 +22,8 @@ namespace ContactsAPI.Repositories.Data
                     FirstName = $"First{i}",
                     LastName = $"Last{i}",
                     Email = $"user{i}@email.com",
-                    PhoneNumber = $"123-456-78{i:D2}"
+                    PhoneNumber = $"123-456-78{i:D2}",
+                    CreatedAt = DateTime.UtcNow
                 });
             }
 

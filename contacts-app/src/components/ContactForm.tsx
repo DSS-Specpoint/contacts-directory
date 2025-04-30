@@ -20,7 +20,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ contact, onSubmit, onCancel }
         firstName: '',
         lastName: '',
         email: '',
-        phone: ''
+        phoneNumber: ''
     });
 
     useEffect(() => {
@@ -110,9 +110,9 @@ const ContactForm: React.FC<ContactFormProps> = ({ contact, onSubmit, onCancel }
                 <TextField
                     fullWidth
                     label="Phone"
-                    name="phone"
+                    name="phoneNumber"
                     type="tel"
-                    value={formData.phone}
+                    value={formData.phoneNumber}
                     onChange={handleChange}
                     required
                     variant="outlined"

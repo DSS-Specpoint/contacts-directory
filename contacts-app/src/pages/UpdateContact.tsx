@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import ContactForm from '../components/ContactForm';
 import { Contact } from '../types/contact';
 import { apiService } from '../services/apiService';
+import { Box, Typography, CircularProgress } from '@mui/material';
+import Layout from '../components/Layout';
 
 const UpdateContact = () => {
     const navigate = useNavigate();
@@ -44,26 +46,79 @@ const UpdateContact = () => {
     };
 
     if (loading) {
-        return <div className="text-center py-4">Loading...</div>;
+        return (
+            <Layout>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                    <CircularProgress />
+                </Box>
+            </Layout>
+        );
     }
 
     if (error) {
-        return <div className="text-center py-4 text-red-600">{error}</div>;
+        return (
+            <Layout>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                    <Typography color="error">{error}</Typography>
+                </Box>
+            </Layout>
+        );
     }
 
     if (!contact) {
-        return <div className="text-center py-4">Contact not found</div>;
+        return (
+            <Layout>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                    <Typography>Contact not found</Typography>
+                </Box>
+            </Layout>
+        );
     }
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">Update Contact</h1>
-            <ContactForm
-                contact={contact}
-                onSubmit={handleSubmit}
-                onCancel={handleCancel}
-            />
-        </div>
+        <Layout>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    width: '100%',
+                }}
+            >
+                <Box 
+                    sx={{ 
+                        textAlign: 'center', 
+                        mb: 4,
+                        width: '100%'
+                    }}
+                >
+                    <Typography 
+                        variant="h4" 
+                        component="h1" 
+                        gutterBottom 
+                        fontWeight="500"
+                        sx={{ color: '#2c3e50' }}
+                    >
+                        Update Contact
+                    </Typography>
+                    <Typography 
+                        variant="body1" 
+                        color="text.secondary" 
+                        gutterBottom
+                        sx={{ color: '#7f8c8d' }}
+                    >
+                        Update the contact details below
+                    </Typography>
+                </Box>
+                <Box sx={{ width: '100%' }}>
+                    <ContactForm
+                        contact={contact}
+                        onSubmit={handleSubmit}
+                        onCancel={handleCancel}
+                    />
+                </Box>
+            </Box>
+        </Layout>
     );
 };
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Contact } from '../types/contact';
+import { apiService } from '../services/apiService';
 
 interface ContactListProps {
     onEdit: (contact: Contact) => void;
@@ -18,11 +19,7 @@ const ContactList: React.FC<ContactListProps> = ({ onEdit, onDelete }) => {
     const fetchContacts = async () => {
         try {
             setLoading(true);
-            const response = await fetch('/api/contacts');
-            if (!response.ok) {
-                throw new Error('Failed to fetch contacts');
-            }
-            const data = await response.json();
+            const data = await apiService.getAllContacts();
             setContacts(data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An error occurred');

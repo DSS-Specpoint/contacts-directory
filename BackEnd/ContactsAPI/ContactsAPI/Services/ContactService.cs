@@ -29,7 +29,8 @@ namespace ContactsAPI.Services
                     FirstName = c.FirstName,
                     LastName = c.LastName,
                     Email = c.Email,
-                    PhoneNumber = c.PhoneNumber
+                    PhoneNumber = c.PhoneNumber,
+                    CreatedAt = c.CreatedAt
                 }).ToList();
             }
             catch (Exception ex)
@@ -51,7 +52,8 @@ namespace ContactsAPI.Services
                     FirstName = contact.FirstName,
                     LastName = contact.LastName,
                     Email = contact.Email,
-                    PhoneNumber = contact.PhoneNumber
+                    PhoneNumber = contact.PhoneNumber,
+                    CreatedAt = contact.CreatedAt
                 };
             }
             catch (Exception ex)
@@ -69,7 +71,8 @@ namespace ContactsAPI.Services
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     Email = request.Email,
-                    PhoneNumber = request.PhoneNumber
+                    PhoneNumber = request.PhoneNumber,
+                    CreatedAt = DateTime.UtcNow
                 };
 
                 return await _contactRepository.CreateAsync(contact);

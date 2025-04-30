@@ -27,5 +27,7 @@ namespace ContactsAPI.Models
         [Phone(ErrorMessage = "Invalid phone number.")]
         [StringLength(10, ErrorMessage = "Phone number cannot be longer than 10 characters.")]
         public string PhoneNumber { get; set; } = string.Empty;
+
+        public DateTime? CreatedAt { get; set; }
     }
 }

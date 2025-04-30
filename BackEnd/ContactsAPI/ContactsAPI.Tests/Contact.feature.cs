@@ -95,7 +95,7 @@ namespace ContactsAPI.Tests
         [Xunit.TraitAttribute("Description", "Get All Contacts")]
         [Xunit.TraitAttribute("Category", "GetAllContacts")]
         [Xunit.InlineDataAttribute("api/contacts", "200", "{\"data\":[{\"id\":1,\"firstName\":\"John\",\"lastName\":\"Doe\",\"email\":\"john.doe@example.co" +
-            "m\",\"phoneNumber\":\"1234567890\"}]}", new string[0])]
+            "m\",\"phoneNumber\":\"1234567890\",\"createdAt\":null}]}", new string[0])]
         public void GetAllContacts(string endpoint, string responseStatusCode, string responseData, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -141,7 +141,7 @@ this.FeatureBackground();
         [Xunit.TraitAttribute("Description", "Get Contact by ID")]
         [Xunit.TraitAttribute("Category", "GetContactById")]
         [Xunit.InlineDataAttribute("api/contacts/1", "200", "{\"data\":{\"id\":1,\"firstName\":\"John\",\"lastName\":\"Doe\",\"email\":\"john.doe@example.com" +
-            "\",\"phoneNumber\":\"1234567890\"}}", new string[0])]
+            "\",\"phoneNumber\":\"1234567890\",\"createdAt\":null}}", new string[0])]
         [Xunit.InlineDataAttribute("api/contacts/99", "404", "{\"message\":\"Contact with Id 99 not found.\"}", new string[0])]
         public void GetContactByID(string endpoint, string responseStatusCode, string responseData, string[] exampleTags)
         {

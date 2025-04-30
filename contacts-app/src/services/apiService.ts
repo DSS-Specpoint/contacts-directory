@@ -8,9 +8,14 @@ export const apiService = {
         try {
             const response = await fetch(API_BASE_URL);
             if (!response.ok) {
-                throw new Error('Failed to fetch contacts');
+                throw new Error(`Failed to fetch contacts: ${response.status} ${response.statusText}`);
             }
-            return await response.json();
+            const result = await response.json();
+            if (!result.data || !Array.isArray(result.data)) {
+                console.error('API returned invalid data format:', result);
+                throw new Error('Invalid response format from server');
+            }
+            return result.data;
         } catch (error) {
             console.error('Error fetching contacts:', error);
             throw error;
