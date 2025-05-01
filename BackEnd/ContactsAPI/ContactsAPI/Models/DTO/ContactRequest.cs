@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ContactsAPI.Models
 {
-    public class Contact
+    public class ContactRequest
     {
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "First name is required.")]
         [StringLength(50, ErrorMessage = "First name cannot be longer than 50 characters.")]
         public string FirstName { get; set; } = string.Empty;
@@ -27,7 +21,5 @@ namespace ContactsAPI.Models
         [Phone(ErrorMessage = "Invalid phone number.")]
         [StringLength(10, ErrorMessage = "Phone number cannot be longer than 10 characters.")]
         public string PhoneNumber { get; set; } = string.Empty;
-
-        public DateTime? CreatedAt { get; set; }
     }
 }
