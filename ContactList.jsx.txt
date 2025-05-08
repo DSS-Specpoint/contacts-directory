@@ -1,0 +1,36 @@
+import React, { useState, useEffect } from 'react';
+
+const ContactList = () => {
+  const [contacts, setContacts] = useState([]);
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const response = await fetch('/api/contact');
+        if (!response.ok) {
+          throw new Error('Failed to fetch contacts');
+        }
+        const data = await response.json();
+        setContacts(data);
+      } catch (error) {
+        console.error('Error fetching contacts:', error);
+      }
+    };
+    fetchContacts();
+  }, []);
+
+  return (
+    <div>
+      <h2>Contact List</h2>
+      <ul>
+        {contacts.map(contact => (
+          <li key={contact.id}>
+            <strong>{contact.name}</strong> - {contact.email} - {contact.phone}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default ContactList;
